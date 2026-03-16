@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "outDir": "dist",
+    "strict": true,
+    //엄격하게 null을 검사할거냐?
+    //true - 임시로 null 넣는거 허용x
+    //false - 임시로 null 넣는거 허용o
+    //"strictNullChecks": false,
+    "moduleDetection": "force",
+    //24년이후 추가
+    "skipLibCheck": true
+  },
+  //ts-node를 esm모듈로 동작하게만듬
+  "ts-node": {
+    "esm": true
+  },
+  "include": ["src"]
+}
