@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    //"target": "ES5" //컴파일 결과 자바스크립트의 버전이 ES5가 됨
+    "target": "esnext",
+    //모듈 시스템 설정
+    "module": "esnext",
+    //컴파일 결과 js파일들이 생성될 위치
+    "outDir": "dist",
+    //타입 검사 유형 true - 엄격하게 검사 false - 유연하게 검사
+    "strict": false,
+    //각각의 파일을 어떤 모듈로 감지할 것인지
+    //이게 자동으로 안되면 ctrl+shift+p 후 restart 검색
+    "moduleDetection": "force",
+    //24년이후 추가
+    "skipLibCheck": true
+  },
+  //ts-node를 esm모듈로 동작하게만듬
+  "ts-node": {
+    "esm": true
+  },
+  "include": ["src"] // 해당경로는 tsc 명령어 사용시 자동으로 컴파일
+}
