@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "outDir": "dist",
+    "strict": true,
+    "moduleDetection": "force",
+    //24년이후 추가
+    "skipLibCheck": true,
+    "allowJs": true // js 파일도 include 경로에 허용해라
+    //"noImplicitAny": false //암시적any를 막을것인지? - 위험
+  },
+  //ts-node를 esm모듈로 동작하게만듬
+  "ts-node": {
+    "esm": true
+  },
+  "include": ["src"]
+}
