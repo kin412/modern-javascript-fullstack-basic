@@ -33,6 +33,8 @@ export const getStaticProps = async () => {
       allBooks,
       recoBooks,
     },
+    //ISR 시 몇초 주기로 이페이지를 다시 생성할지?
+    //revalidate: 3,
   };
 };
 
