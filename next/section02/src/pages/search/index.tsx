@@ -2,40 +2,54 @@
 //next/navigator - appRouter
 import SearchableLayout from "@/components/searchable-layout";
 import { useRouter } from "next/router";
-import { ReactNode } from "react";
+import { ReactNode, useEffect, useState } from "react";
 //import books from "@/mock/books.json";
 import BookItem from "@/components/book-item";
-import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
+import {
+  GetServerSidePropsContext,
+  GetStaticPropsContext,
+  InferGetServerSidePropsType,
+} from "next";
 import fetchBooks from "@/lib/fetch-books";
 import { BookData } from "@/types";
 
-//쿼리스트링을 getServerSideProps 에서 읽을 때
-//getServerSideProps - 현재 브라우저로부터 받은 요청에 대한 모든 정보가 들어있음
-export const getServerSideProps = async (
-  context: GetServerSidePropsContext,
-) => {
-  //console.log(context);
-  const q = context.query.q;
-  const books = await fetchBooks(q as string);
+// export const getStaticProps = async (context: GetStaticPropsContext) => {
+//   //console.log(context);
+//   //GetStaticPropsContext는 query 속성이 없음.
+//   //빌드타임에 딱한번 실행되기 때문에 그때는 쿼리스트링을 알수가 없어서.
+//   //그래서 쿼리스트링을 쓰지못하고 리액트때 했던 props방식으로 데이터 페칭을 해줘야함
+//   const q = context.query.q;
+//   const books = await fetchBooks(q as string);
 
-  return {
-    props: {
-      books,
-    },
+//   return {
+//     props: {
+//       books,
+//     },
+//   };
+// };
+
+//
+// export default function Page({
+//   books,
+// }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+// getStaticProps 는 쿼리스트링을 받아올수 없으므로 컴포넌트 내부에서 리액트로 하듯이 router와 effect사용
+export default function Page() {
+  const [books, setBooks] = useState<BookData[]>([]);
+  const router = useRouter();
+  const q = router.query.q;
+
+  const fetchSearchResult = async () => {
+    const data = await fetchBooks(q as string);
+    setBooks(data);
   };
-};
 
-//page폴더 자체가 최상위 요청경로다. 스프링의 requestmapping("/")
-//search폴더에 index를 만들면 만든 것 만으로 localhost:3000/search 요청 시 index파일을 호출한다.
-export default function Page({
-  books,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  // const router = useRouter();
-  // console.log(router);
-  // //쿼리스트링 꺼내오기
-  // //const q = router.query.q;
-  // const { q } = router.query;
-  // return <h1>search q: {q}</h1>;
+  useEffect(() => {
+    if (q) {
+      //검색결과를 불러오는 로직
+      fetchSearchResult();
+    }
+  }, [q]);
+
   return (
     <div>
       {books.map((book) => (

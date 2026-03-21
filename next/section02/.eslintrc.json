@@ -1,3 +1,8 @@
 {
-  "extends": ["next/core-web-vitals", "next/typescript"]
+  "extends": ["next/core-web-vitals", "next/typescript"],
+  "rules": {
+    // 사용하지 않는 변수에 대해 에러 대신 경고(warn)만 띄우거나, 아예 끄기(off)
+    "@typescript-eslint/no-unused-vars": "off",
+    "no-unused-vars": "off"
+  }
 }

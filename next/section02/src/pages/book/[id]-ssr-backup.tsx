@@ -9,12 +9,10 @@ import { useRouter } from "next/router";
 import style from "./[id].module.css";
 import {
   GetServerSidePropsContext,
-  GetStaticPropsContext,
   InferGetServerSidePropsType,
   InferGetStaticPropsType,
 } from "next";
 import fetchOneBook from "@/lib/fetch-one-book";
-import { notFound } from "next/navigation";
 
 const mockData = {
   id: 1,
@@ -28,38 +26,13 @@ const mockData = {
     "https://shopping-phinf.pstatic.net/main_3888828/38888282618.20230913071643.jpg",
 };
 
-//ssg - 어떠한 경로들이 존재할수 있는지 지정해야 빌드타임에 이를 참고해서 만듬
-//ssg 방식일경우 이게 없으면 에러
-export const getStaticPaths = () => {
-  return {
-    paths: [
-      { params: { id: "1" } },
-      { params: { id: "2" } },
-      { params: { id: "3" } },
-    ],
-    //폴백옵션 대체, 대비책, 보험 - paths에 정하지 않은 요청이 들어왔을때 어떻게 할것인가?
-    //false - path에 지정하지 않은건 404
-    //blocking - ssr처럼 서버에서 즉시 생성해서 반환
-    //blocking 시에는 백에서 데이터를 불러오는 시간동안 로딩이 생기게됨 => 이걸 해결하기위한 옵션이 다음의 true
-    //true - getStaticProps 에서 return에 페이지에 전달하는 데이터가 없는 빈페이지를 즉각 브라우저에 전달. 레이아웃정도만.
-    //후에 필요한 데이터를 계산한후 추가로 전송
-    fallback: true,
-  };
-};
-
-//
-export const getStaticProps = async (context: GetStaticPropsContext) => {
+export const getServerSideProps = async (
+  context: GetServerSidePropsContext,
+) => {
   //url parameter는 GetServerSidePropsContext.params.id
   //확실히 있다는 !단언을 사용할수 있는것은 애초에 이 [id] 페이지는 id값이 있어야만 들어올수있음
   const id = context.params!.id;
   const book = await fetchOneBook(Number(id));
-
-  //book데이터를 못불러왔다면 자동으로 404로 이동시킴
-  if (!book) {
-    return {
-      notFound: true,
-    };
-  }
 
   return {
     props: {
@@ -70,10 +43,7 @@ export const getStaticProps = async (context: GetStaticPropsContext) => {
 
 export default function Page({
   book,
-}: InferGetStaticPropsType<typeof getStaticProps>) {
-  const router = useRouter();
-  //fallback상태에 빠져있을때, 데이터를 백엔드 서버에서 가져오는 중일때
-  if (router.isFallback) return "로딩중입니다.";
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
   if (!book) return "문제가 발생했습니다. 다시시도하세요.";
 
   const { id, title, subTitle, description, author, publisher, coverImgUrl } =
