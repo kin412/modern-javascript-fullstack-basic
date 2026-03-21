@@ -1,10 +1,13 @@
 import { BookData } from "@/types";
 
 export default async function fetchBooks(q?: string): Promise<BookData[]> {
-  let url = `http://localhost:12345/book`;
+  //로컬에서 띄운 서버에 붙을때
+  //let url = `http://localhost:12345/book`;
+  //vercel설정
+  let url = `https://onebite-books-server-main-plum.vercel.app/book`;
 
   //q에대한 타입가드
-  if (q) {
+  https: if (q) {
     url += `/search?q=${q}`;
   }
 
