@@ -7,12 +7,6 @@
 
 import { useRouter } from "next/router";
 import style from "./[id].module.css";
-import {
-  GetServerSidePropsContext,
-  InferGetServerSidePropsType,
-  InferGetStaticPropsType,
-} from "next";
-import fetchOneBook from "@/lib/fetch-one-book";
 
 const mockData = {
   id: 1,
@@ -26,28 +20,9 @@ const mockData = {
     "https://shopping-phinf.pstatic.net/main_3888828/38888282618.20230913071643.jpg",
 };
 
-export const getServerSideProps = async (
-  context: GetServerSidePropsContext,
-) => {
-  //url parameter는 GetServerSidePropsContext.params.id
-  //확실히 있다는 !단언을 사용할수 있는것은 애초에 이 [id] 페이지는 id값이 있어야만 들어올수있음
-  const id = context.params!.id;
-  const book = await fetchOneBook(Number(id));
-
-  return {
-    props: {
-      book,
-    },
-  };
-};
-
-export default function Page({
-  book,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  if (!book) return "문제가 발생했습니다. 다시시도하세요.";
-
+export default function Page() {
   const { id, title, subTitle, description, author, publisher, coverImgUrl } =
-    book;
+    mockData;
 
   return (
     <div className={style.container}>
