@@ -2,9 +2,9 @@
 //"use client";
 
 //import { useEffect } from "react";
-import ClientComponent from "./client-component";
+import ClientComponent from "../../components/client-component";
 import styles from "./page.module.css";
-import ServerComponent from "./server-component";
+import ServerComponent from "../../components/server-component";
 
 export default function Home() {
   //app router는 기본적으로 서버컴포넌트 설정이 되어있으므로 이곳에 작성되는 것들은 브라우저에 보이지 않는다.
