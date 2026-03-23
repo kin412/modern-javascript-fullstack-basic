@@ -12,6 +12,7 @@ import { BookData } from "@/types";
 async function Footer() {
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_SERVER_URL}/book`,
+    { cache: "force-cache" },
   );
   if (!response.ok) {
     return <div>제작 @kin412</div>;

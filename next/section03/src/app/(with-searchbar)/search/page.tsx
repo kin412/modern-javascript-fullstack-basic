@@ -11,6 +11,10 @@ export default async function Page({
 
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_SERVER_URL}/book/search?q=${q}`,
+    //force-cache를 하게되면 q가 바뀜에 따라 동적으로 검색되는 것은 어쩔수가 없기때문에 static 페이지로 바꿀수는 없겠지만
+    //최소한 동일한 검색조건 q에 대해서는 데이터 캐시가 가능하다.
+    //그리고 이렇게 데이터 캐시가 되면, 이파일의 다른 곳에서 동적인것이 없는경우는 해당 페이지도 빌드타임에 풀라우트 캐시가 적용될수 있음.
+    { cache: "force-cache" },
   );
   if (!response.ok) {
     return <div>오류가 발생했습니다...</div>;

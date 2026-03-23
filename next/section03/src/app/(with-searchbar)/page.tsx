@@ -5,7 +5,8 @@ import { BookData } from "@/types";
 async function AllBooks() {
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_SERVER_URL}/book`,
-    { cache: "no-store" }, //캐싱되지 않음. 매요청마다 새롭게 불러옴 -> 15버전부터는 이게 기본 옵션임.
+    //{ cache: "no-store" }, //캐싱되지 않음. 매요청마다 새롭게 불러옴 -> 15버전부터는 이게 기본 옵션임.
+    { cache: "force-cache" },
   );
   if (!response.ok) {
     return <div>오류가 발생했습니다...</div>;
