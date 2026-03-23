@@ -2,15 +2,12 @@ import books from "@/mock/books.json";
 import BookItem from "@/components/book-item";
 import { BookData } from "@/types";
 import { delay } from "@/util/delay";
+import { Suspense } from "react";
 
 //export const dynamic = "force-static";
 
-export default async function Page({
-  searchParams,
-}: {
-  searchParams: Promise<{ q?: string }>;
-}) {
-  const { q } = await searchParams;
+async function SearchResult({ q }: { q: string }) {
+  //const { q } = await searchParams;
 
   //스트리밍. 딜레이동안 책목록외에 다른것들은 다 제대로 뜨지만 책목록은 loading.tsx가 뜨게됨.
   await delay(1500);
@@ -33,5 +30,22 @@ export default async function Page({
         <BookItem key={book.id} {...book} />
       ))}
     </div>
+  );
+}
+
+export default function Page({
+  searchParams,
+}: {
+  //searchParams: Promise<{ q?: string }>;
+  searchParams: { q?: string };
+}) {
+  return (
+    // Suspense 로 감싸면 자동으로 스트리밍이 됨. 미완성 상태.
+    <Suspense
+      key={searchParams.q || ""} //키가 바뀌면 컴포넌트를 새롭게 렌더링함.
+      fallback={<div>suspense fallback Loading...</div>}
+    >
+      <SearchResult q={searchParams.q || ""} />
+    </Suspense>
   );
 }

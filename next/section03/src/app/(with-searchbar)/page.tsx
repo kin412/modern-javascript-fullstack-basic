@@ -1,6 +1,8 @@
 import BookItem from "@/components/book-item";
 import style from "./page.module.css";
 import { BookData } from "@/types";
+import { delay } from "@/util/delay";
+import { Suspense } from "react";
 
 //라우트 세그먼트 옵션 dynamic - 특정 페이지의 유형을 강제로 static, dynamic 페이지로 설정
 // dynamic은 잘쓰진 않음. 하나의 파일 내에 각 컴포넌트마다 설정이 다르기때문
@@ -8,9 +10,10 @@ import { BookData } from "@/types";
 // 2. force-dynamic : 페이지를 강제로 dynamic 페이지로 설정
 // 3. force-static : 페이지를 강제로 static 페이지로 설정
 // 4. error : 페이지를 강제로 static 페이지로 설정 (설정하면 안되는 이유 -> 빌드 오류)
-export const dynamic = "auto";
+//export const dynamic = "auto";
 
 async function AllBooks() {
+  await delay(1500);
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_SERVER_URL}/book`,
     //{ cache: "no-store" }, //캐싱되지 않음. 매요청마다 새롭게 불러옴 -> 15버전부터는 이게 기본 옵션임.
@@ -32,6 +35,7 @@ async function AllBooks() {
 }
 
 async function RecoBooks() {
+  await delay(3000);
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_SERVER_URL}/book/random`,
     //항상 캐싱 됨. 처음 백엔드서버에서 응답이오면 해당 데이터를 set해놓고 있다가
@@ -58,6 +62,9 @@ async function RecoBooks() {
   );
 }
 
+//이 page의 Home은 정적인 화면을 리턴한다.
+export const dynamic = "force-dynamic";
+
 //page router에서는 getserversideprops 이런 함수를통해서 리턴한것을 화면을 담당하는 컴포넌트가 props로 받아서
 //그게 필요한 컴포넌트까지 context로 전달하는 일이 필요했지만
 //app router에서는 그냥 비동기 함수로 만들면된다.
@@ -70,14 +77,18 @@ export default function Home() {
         {/* {books.map((book) => (
           <BookItem key={book.id} {...book} />
         ))} */}
-        <RecoBooks />
+        <Suspense fallback={<div>추천도서를 불러오는 중입니다.</div>}>
+          <RecoBooks />
+        </Suspense>
       </section>
       <section>
         <h3>등록된 모든 도서</h3>
         {/* {allBooks.map((book) => (
           <BookItem key={book.id} {...book} />
         ))} */}
-        <AllBooks />
+        <Suspense fallback={<div>모든도서를 불러오는 중입니다.</div>}>
+          <AllBooks />
+        </Suspense>
       </section>
     </div>
   );
