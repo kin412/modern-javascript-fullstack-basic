@@ -1,6 +1,7 @@
 import books from "@/mock/books.json";
 import BookItem from "@/components/book-item";
 import { BookData } from "@/types";
+import { delay } from "@/util/delay";
 
 //export const dynamic = "force-static";
 
@@ -11,6 +12,8 @@ export default async function Page({
 }) {
   const { q } = await searchParams;
 
+  //스트리밍. 딜레이동안 책목록외에 다른것들은 다 제대로 뜨지만 책목록은 loading.tsx가 뜨게됨.
+  await delay(1500);
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_SERVER_URL}/book/search?q=${q}`,
     //force-cache를 하게되면 q가 바뀜에 따라 동적으로 검색되는 것은 어쩔수가 없기때문에 static 페이지로 바꿀수는 없겠지만
