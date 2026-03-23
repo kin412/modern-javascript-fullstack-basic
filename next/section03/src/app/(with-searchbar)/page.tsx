@@ -3,6 +3,8 @@ import style from "./page.module.css";
 import { BookData } from "@/types";
 import { delay } from "@/util/delay";
 import { Suspense } from "react";
+import BookItemSkeleton from "@/components/skeleton/book-item-skeleton";
+import BookListSkeleton from "@/components/skeleton/book-list-skeleton";
 
 //라우트 세그먼트 옵션 dynamic - 특정 페이지의 유형을 강제로 static, dynamic 페이지로 설정
 // dynamic은 잘쓰진 않음. 하나의 파일 내에 각 컴포넌트마다 설정이 다르기때문
@@ -77,7 +79,7 @@ export default function Home() {
         {/* {books.map((book) => (
           <BookItem key={book.id} {...book} />
         ))} */}
-        <Suspense fallback={<div>추천도서를 불러오는 중입니다.</div>}>
+        <Suspense fallback={<BookListSkeleton count={3} />}>
           <RecoBooks />
         </Suspense>
       </section>
@@ -86,7 +88,12 @@ export default function Home() {
         {/* {allBooks.map((book) => (
           <BookItem key={book.id} {...book} />
         ))} */}
-        <Suspense fallback={<div>모든도서를 불러오는 중입니다.</div>}>
+        <Suspense
+          fallback={
+            // 스트리밍시 스켈레톤 적용
+            <BookListSkeleton count={12} />
+          }
+        >
           <AllBooks />
         </Suspense>
       </section>

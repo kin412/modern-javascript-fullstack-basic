@@ -3,6 +3,7 @@ import BookItem from "@/components/book-item";
 import { BookData } from "@/types";
 import { delay } from "@/util/delay";
 import { Suspense } from "react";
+import BookListSkeleton from "@/components/skeleton/book-list-skeleton";
 
 //export const dynamic = "force-static";
 
@@ -43,7 +44,8 @@ export default function Page({
     // Suspense 로 감싸면 자동으로 스트리밍이 됨. 미완성 상태.
     <Suspense
       key={searchParams.q || ""} //키가 바뀌면 컴포넌트를 새롭게 렌더링함.
-      fallback={<div>suspense fallback Loading...</div>}
+      // fallback={<div>suspense fallback Loading...</div>}
+      fallback={<BookListSkeleton count={3} />}
     >
       <SearchResult q={searchParams.q || ""} />
     </Suspense>
