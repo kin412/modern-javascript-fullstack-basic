@@ -34,20 +34,24 @@ async function SearchResult({ q }: { q: string }) {
   );
 }
 
-export default function Page({
+export default async function Page({
   searchParams,
 }: {
-  //searchParams: Promise<{ q?: string }>;
-  searchParams: { q?: string };
+  searchParams: Promise<{ q?: string }>;
+  //searchParams: { q?: string };
 }) {
+  // 2. searchParams를 먼저 기다려(await) 값을 가져옵니다.
+  const { q } = await searchParams;
+  const searchKey = q || "";
+
   return (
     // Suspense 로 감싸면 자동으로 스트리밍이 됨. 미완성 상태.
     <Suspense
-      key={searchParams.q || ""} //키가 바뀌면 컴포넌트를 새롭게 렌더링함.
+      key={searchKey || ""} //키가 바뀌면 컴포넌트를 새롭게 렌더링함.
       // fallback={<div>suspense fallback Loading...</div>}
       fallback={<BookListSkeleton count={3} />}
     >
-      <SearchResult q={searchParams.q || ""} />
+      <SearchResult q={searchKey || ""} />
     </Suspense>
   );
 }
