@@ -1,9 +1,11 @@
 import { notFound } from "next/navigation";
 import style from "./page.module.css";
 
+//라우트 세그먼트 옵션 - dynamicParams, generateStaticParams
+
 //이페이지에는 url 파라미터가 존재하면 안될경우.
 //generateStaticParams여기에서 리턴하는 케이스이외의 페이지에 접근시 404
-export const dynamicParams = false;
+//export const dynamicParams = false;
 
 //빌드타임에 풀 라우트 캐시를 만들기위해 동적경로를 만드는 약속된 이름의 함수 generateStaticParams
 //페이지 라우터의 getStaticPaths의 앱라우터버전

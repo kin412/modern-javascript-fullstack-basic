@@ -2,6 +2,14 @@ import BookItem from "@/components/book-item";
 import style from "./page.module.css";
 import { BookData } from "@/types";
 
+//라우트 세그먼트 옵션 dynamic - 특정 페이지의 유형을 강제로 static, dynamic 페이지로 설정
+// dynamic은 잘쓰진 않음. 하나의 파일 내에 각 컴포넌트마다 설정이 다르기때문
+// 1. auto : 기본값, 아무것도 강제하지 않음.
+// 2. force-dynamic : 페이지를 강제로 dynamic 페이지로 설정
+// 3. force-static : 페이지를 강제로 static 페이지로 설정
+// 4. error : 페이지를 강제로 static 페이지로 설정 (설정하면 안되는 이유 -> 빌드 오류)
+export const dynamic = "auto";
+
 async function AllBooks() {
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_SERVER_URL}/book`,

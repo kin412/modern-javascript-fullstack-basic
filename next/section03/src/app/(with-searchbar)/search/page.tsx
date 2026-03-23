@@ -2,6 +2,8 @@ import books from "@/mock/books.json";
 import BookItem from "@/components/book-item";
 import { BookData } from "@/types";
 
+//export const dynamic = "force-static";
+
 export default async function Page({
   searchParams,
 }: {
