@@ -1,5 +1,8 @@
 import { notFound } from "next/navigation";
 import style from "./page.module.css";
+import { ReviewData } from "@/types";
+import ReviewItem from "@/components/review-item";
+import ReviewEditor from "@/components/review-editor";
 
 //라우트 세그먼트 옵션 - dynamicParams, generateStaticParams
 
@@ -50,29 +53,23 @@ async function BookDetail({ bookId }: { bookId: string }) {
   );
 }
 
-//리뷰 - 서버액션
-//서버 컴포넌트는 상호작용하는 코드가 없고 그냥 정적인 페이지만 만들어서 페이로드로 사용자 한테 던지고
-//이벤트가 필요한 부분은 클라이언트 컴포넌트를 하이드레이션해서 입히는거니까 폼 날리는것도
-//클라이언트에 이벤트처리한다고 넣으면 노출되니까 노출안되게 하면서 이벤트도 입히는게 서버액션
-function ReviewEditor() {
-  async function createReviewAction(formData: FormData) {
-    "use server"; // 서버 액션 설정
-    console.log("server action called");
-    console.log(formData);
+async function ReviewList({ bookId }: { bookId: string }) {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_SERVER_URL}/review/book/${bookId}`,
+  );
 
-    const content = formData.get("content")?.toString();
-    const author = formData.get("author")?.toString();
-
-    console.log("content : ", content, "author : ", author);
+  //book 아래 error.tsx가 캐치
+  if (!response.ok) {
+    throw new Error(`Review fetch failed : ${response.statusText}`);
   }
+
+  const reviews: ReviewData[] = await response.json();
 
   return (
     <section>
-      <form action={createReviewAction}>
-        <input name="content" placeholder="리뷰 내용" />
-        <input name="author" placeholder="작성자" />
-        <button type="submit">작성하기</button>
-      </form>
+      {reviews.map((review) => (
+        <ReviewItem key={`review-item-${review.id}`} {...review} />
+      ))}
     </section>
   );
 }
@@ -86,7 +83,8 @@ export default async function Page({
   return (
     <div className={style.container}>
       <BookDetail bookId={id} />
-      <ReviewEditor />
+      <ReviewEditor bookId={id} />
+      <ReviewList bookId={id} />
     </div>
   );
 }
