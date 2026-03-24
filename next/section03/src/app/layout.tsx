@@ -2,6 +2,7 @@ import "./globals.css";
 import Link from "next/link";
 import style from "./layout.module.css";
 import { BookData } from "@/types";
+import { ReactNode } from "react";
 
 //이 레이아웃은 가장 최상단의 레이아웃으로써 이안의 다른 모든 컴포넌트의 부모 컴포넌트이다.
 //근데 여기서 서버컴포넌트인 Footer도 book api를 데이터 페칭해서 북갯수를 화면에 뿌려주고
@@ -31,8 +32,10 @@ async function Footer() {
 
 export default function RootLayout({
   children,
+  modal,
 }: Readonly<{
   children: React.ReactNode;
+  modal: ReactNode;
 }>) {
   return (
     <html lang="en">
@@ -45,6 +48,7 @@ export default function RootLayout({
           {/* <footer>제작 @kin412</footer> */}
           <Footer />
         </div>
+        {modal}
         <div id="modal-root"></div>
       </body>
     </html>
