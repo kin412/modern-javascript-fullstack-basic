@@ -8,6 +8,8 @@
 //노출되지 않기위해 분리했더라도 서버액션으로 설정한다.
 "use server";
 
+import { revalidatePath } from "next/cache";
+
 export async function createReviewAction(formData: FormData) {
   //"use server"; // 서버 액션 설정. tsx파일에서 다른 컴포넌트 안에있었다면 여기에.
   console.log("server action called");
@@ -32,6 +34,10 @@ export async function createReviewAction(formData: FormData) {
       },
     );
     console.log("respone.status : ", response.status);
+    //넥스트 서버가 해당 경로의 페이지를 재검증, 즉 재생성 하게됨. - ISR 온디맨드
+    //서버 컴포넌트나 서버 액션에서만 사용가능
+    //이페이지에 포함된 모든 컴포넌트의 풀라우트캐시와 데이터 캐시가 삭제(PURGE)됨.
+    revalidatePath(`/book/${bookId}`);
   } catch (err) {
     console.log(err);
     return;
