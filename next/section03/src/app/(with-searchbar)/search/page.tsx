@@ -4,6 +4,7 @@ import { BookData } from "@/types";
 import { delay } from "@/util/delay";
 import { Suspense } from "react";
 import BookListSkeleton from "@/components/skeleton/book-list-skeleton";
+import { Metadata } from "next";
 
 //export const dynamic = "force-static";
 
@@ -33,6 +34,32 @@ async function SearchResult({ q }: { q: string }) {
     </div>
   );
 }
+
+//동적인 값의 메타데이터
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: Promise<{ q?: string }>;
+}): Promise<Metadata> {
+  const { q } = await searchParams;
+
+  return {
+    title: `${q}: 한입 북스 검색`,
+    description: `${q}의 검색 결과입니다.`,
+    openGraph: {
+      title: `${q}: 한입 북스 검색`,
+      description: `${q}의 검색 결과입니다.`,
+      images: ["/thumbnail.png"],
+    },
+  };
+}
+
+//동적인 값으로는 설정할수 없음.
+// export const metadata: Metadata = {
+//   title: "한입북스 : 검색어",
+//   description: "",
+//   openGraph: {},
+// };
 
 export default async function Page({
   searchParams,

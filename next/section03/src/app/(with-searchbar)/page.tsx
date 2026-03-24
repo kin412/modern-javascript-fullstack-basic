@@ -4,6 +4,7 @@ import { BookData } from "@/types";
 import { delay } from "@/util/delay";
 import { Suspense } from "react";
 import BookListSkeleton from "@/components/skeleton/book-list-skeleton";
+import { Metadata } from "next";
 
 //라우트 세그먼트 옵션 dynamic - 특정 페이지의 유형을 강제로 static, dynamic 페이지로 설정
 // dynamic은 잘쓰진 않음. 하나의 파일 내에 각 컴포넌트마다 설정이 다르기때문
@@ -65,6 +66,17 @@ async function RecoBooks() {
 
 //이 page의 Home은 정적인 화면을 리턴한다.
 export const dynamic = "force-dynamic";
+
+//메타 데이터
+export const metadata: Metadata = {
+  title: "한입 북스",
+  description: "한입 북스에 등록된 도서를 만나보세요",
+  openGraph: {
+    title: "한입 북스",
+    description: "한입 북스에 등록된 도서를 만나보세요.",
+    images: ["/thumnail.png"],
+  },
+};
 
 //page router에서는 getserversideprops 이런 함수를통해서 리턴한것을 화면을 담당하는 컴포넌트가 props로 받아서
 //그게 필요한 컴포넌트까지 context로 전달하는 일이 필요했지만
