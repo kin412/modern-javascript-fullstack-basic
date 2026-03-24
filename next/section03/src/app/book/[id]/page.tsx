@@ -17,15 +17,9 @@ export function generateStaticParams() {
   return [{ id: "1" }, { id: "2" }, { id: "3" }];
 }
 
-export default async function Page({
-  params,
-}: {
-  params: Promise<{ id: string | string[] }>;
-}) {
-  const { id } = await params;
-
+async function BookDetail({ bookId }: { bookId: string }) {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_SERVER_URL}/book/${id}`,
+    `${process.env.NEXT_PUBLIC_API_SERVER_URL}/book/${bookId}`,
   );
   if (!response.ok) {
     if (response.status === 404) {
@@ -39,7 +33,7 @@ export default async function Page({
   const { title, subTitle, description, author, publisher, coverImgUrl } = book;
 
   return (
-    <div className={style.container}>
+    <section>
       <div
         className={style.cover_img_container}
         style={{ backgroundImage: `url('${coverImgUrl}')` }}
@@ -52,6 +46,47 @@ export default async function Page({
         {author} | {publisher}
       </div>
       <div className={style.description}>{description}</div>
+    </section>
+  );
+}
+
+//리뷰 - 서버액션
+//서버 컴포넌트는 상호작용하는 코드가 없고 그냥 정적인 페이지만 만들어서 페이로드로 사용자 한테 던지고
+//이벤트가 필요한 부분은 클라이언트 컴포넌트를 하이드레이션해서 입히는거니까 폼 날리는것도
+//클라이언트에 이벤트처리한다고 넣으면 노출되니까 노출안되게 하면서 이벤트도 입히는게 서버액션
+function ReviewEditor() {
+  async function createReviewAction(formData: FormData) {
+    "use server"; // 서버 액션 설정
+    console.log("server action called");
+    console.log(formData);
+
+    const content = formData.get("content")?.toString();
+    const author = formData.get("author")?.toString();
+
+    console.log("content : ", content, "author : ", author);
+  }
+
+  return (
+    <section>
+      <form action={createReviewAction}>
+        <input name="content" placeholder="리뷰 내용" />
+        <input name="author" placeholder="작성자" />
+        <button type="submit">작성하기</button>
+      </form>
+    </section>
+  );
+}
+
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
+  return (
+    <div className={style.container}>
+      <BookDetail bookId={id} />
+      <ReviewEditor />
     </div>
   );
 }
