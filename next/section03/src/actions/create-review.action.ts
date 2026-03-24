@@ -8,9 +8,11 @@
 //노출되지 않기위해 분리했더라도 서버액션으로 설정한다.
 "use server";
 
+import { delay } from "@/util/delay";
 import { revalidatePath, revalidateTag } from "next/cache";
 
-export async function createReviewAction(formData: FormData) {
+//_는 useActionState를 사용시 첫번째 매개변수는 state를 무조건 써워햐지만, 안쓸것이므로 _로 처리함.
+export async function createReviewAction(_: any, formData: FormData) {
   //"use server"; // 서버 액션 설정. tsx파일에서 다른 컴포넌트 안에있었다면 여기에.
   console.log("server action called");
   console.log(formData);
@@ -22,17 +24,25 @@ export async function createReviewAction(formData: FormData) {
   console.log("bookId : ", bookId, "content : ", content, "author : ", author);
 
   if (!bookId || !content || !author) {
-    return;
+    return {
+      status: false,
+      error: "리뷰내용과 작성자를 입력해주세요",
+    };
   }
 
   try {
+    //이런 어떤 처리가 많아 늦게 완료된다면 사용자는 중복으로 몇번의 요청을 더날릴 수도 있다.
+    await delay(2000);
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_SERVER_URL}/review`,
+      `${process.env.NEXT_PUBLIC_API_SERVER_URL}/review/`,
       {
         method: "POST",
         body: JSON.stringify({ bookId, content, author }),
       },
     );
+    if (!response.ok) {
+      throw new Error(response.statusText);
+    }
     console.log("respone.status : ", response.status);
     //넥스트 서버가 해당 경로의 페이지를 재검증, 즉 재생성 하게됨. - ISR 온디맨드
     //서버 컴포넌트나 서버 액션에서만 사용가능
@@ -52,8 +62,15 @@ export async function createReviewAction(formData: FormData) {
     //5. 태그를 기준으로 데이터 캐시 재검증
     //권장
     revalidateTag(`review-${bookId}`);
+    return {
+      status: true,
+      error: "",
+    };
   } catch (err) {
-    console.log(err);
-    return;
+    //console.log(err);
+    return {
+      status: false,
+      error: `리뷰저장에 실패했습니다 : ${err}`,
+    };
   }
 }
