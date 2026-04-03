@@ -6,34 +6,9 @@
       "isDone": true
     },
     {
-      "id": "2",
-      "content": "Todo 2",
-      "isDone": true
-    },
-    {
-      "id": "3",
-      "content": "Todo 3",
-      "isDone": false
-    },
-    {
-      "content": "3213123",
+      "content": "ㅅㄳㄳ",
       "isDone": false,
-      "id": "FSSAvP6KdkA"
-    },
-    {
-      "content": "33313212",
-      "isDone": false,
-      "id": "U2WIerbgqpM"
-    },
-    {
-      "content": "446656",
-      "isDone": false,
-      "id": "-TyKVF7sI18"
-    },
-    {
-      "content": "할일할일",
-      "isDone": false,
-      "id": "MJXW7cocnpA"
+      "id": "NxKHuFS--S0"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
