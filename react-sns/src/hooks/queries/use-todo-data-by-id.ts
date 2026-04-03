@@ -1,10 +1,12 @@
 import { fetchTodoById } from "@/api/fetch-todo-by-id";
+import { QUERY_KEYS } from "@/lib/constants";
 import { useQuery } from "@tanstack/react-query";
 
 export function useTodoDataById(id: string) {
   return useQuery({
     queryFn: () => fetchTodoById(id),
-    queryKey: ["todos", id],
+    //queryKey: ["todos", id],
+    queryKey: QUERY_KEYS.todo.detail(id),
 
     //stale되는데 걸리는 시간. fresh가 유지되는 시간
     //주식과 같이 찰나의 시간이 중요한 서비스가 아니라면 보통 5초 - 30초 정도가 국룰임
