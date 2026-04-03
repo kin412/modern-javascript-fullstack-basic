@@ -47,7 +47,8 @@ export default function TodoListPage() {
   // }, []);
 
   //tanstack query
-  const { data: todos, isLoading, error } = useTodosData();
+  //const { data: todos, isLoading, error } = useTodosData();
+  const { data: todoIds, isLoading, error } = useTodosData();
 
   if (error) return <div>오류발생</div>;
   if (isLoading) return <div>로딩중...</div>;
@@ -56,8 +57,11 @@ export default function TodoListPage() {
     <div className="flex flex-col gap-5 p-5">
       <h1 className="text-2xl font-bold">TodoList</h1>
       <TodoEditor />
-      {todos?.map((todo) => (
+      {/* {todos?.map((todo) => (
         <TodoItem key={todo.id} {...todo} />
+      ))} */}
+      {todoIds?.map((id) => (
+        <TodoItem key={id} id={id} />
       ))}
     </div>
   );

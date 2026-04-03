@@ -4,8 +4,13 @@ import { Link } from "react-router";
 import type { Todo } from "@/types";
 import { useUpdateTodoMutation } from "@/hooks/mutations/use-update-todo-mutation";
 import { useDeleteTodoMutation } from "@/hooks/mutations/use-delete-todo-mutation";
+import { useTodoDataById } from "@/hooks/queries/use-todo-data-by-id";
 
-export default function TodoItem({ id, content, isDone }: Todo) {
+//export default function TodoItem({ id, content, isDone }: Todo) {
+export default function TodoItem({ id }: { id: string }) {
+  const { data: todo } = useTodoDataById(id, "LIST");
+  if (!todo) throw new Error("Todo Data Undefined");
+  const { content, isDone } = todo;
   //const deleteTodo = useDeleteTodo();
   //isPending - 삭제중일때 다른 상호작용 막기위해
   const { mutate: deleteTodo, isPending: isDeleteTodoPending } =
