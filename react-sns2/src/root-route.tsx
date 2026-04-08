@@ -6,21 +6,24 @@ import IndexPage from "./pages/index-page";
 import PostDetailPage from "./pages/post-detail-page";
 import ProfileDetailPage from "./pages/profile-detail-page";
 import ResetPasswordPage from "./pages/reset-password-page";
+import GlobalLayout from "./components/layout/global-layout";
 
 export default function RootRoute() {
   return (
     <Routes>
-      <Route path="/sign-in" element={<SignInPage />} />
-      <Route path="/sign-up" element={<SignUpPage />} />
-      <Route path="/forget-password" element={<ForgetPasswordPage />} />
+      <Route element={<GlobalLayout />}>
+        <Route path="/sign-in" element={<SignInPage />} />
+        <Route path="/sign-up" element={<SignUpPage />} />
+        <Route path="/forget-password" element={<ForgetPasswordPage />} />
 
-      <Route path="/" element={<IndexPage />} />
-      <Route path="/post/:postId" element={<PostDetailPage />} />
-      <Route path="/profile/:userId" element={<ProfileDetailPage />} />
-      <Route path="/reset-pasword" element={<ResetPasswordPage />} />
+        <Route path="/" element={<IndexPage />} />
+        <Route path="/post/:postId" element={<PostDetailPage />} />
+        <Route path="/profile/:userId" element={<ProfileDetailPage />} />
+        <Route path="/reset-pasword" element={<ResetPasswordPage />} />
 
-      {/* 위에서 설정한 경로 이외의 요청이 들어오면 index로 이동 */}
-      <Route path="*" element={<Navigate to={"/"} />} />
+        {/* 위에서 설정한 경로 이외의 요청이 들어오면 index로 이동 */}
+        <Route path="*" element={<Navigate to={"/"} />} />
+      </Route>
     </Routes>
   );
 }
