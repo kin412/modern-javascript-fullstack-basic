@@ -1,4 +1,5 @@
-#한입 크기로 잘라먹는 React.js 실전 프로젝트 - SNS편- 라이브러리  
+# 한입 크기로 잘라먹는 React.js 실전 프로젝트 - SNS편- 라이브러리
+
 섹션2. Tailwind CSS, Shadcn/ui, ReactRouter V7  
 섹션3. Zustand - 전역 상태 관리  
 섹션4. Tanstack Query
