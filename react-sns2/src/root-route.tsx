@@ -24,7 +24,7 @@ export default function RootRoute() {
           <Route path="/" element={<IndexPage />} />
           <Route path="/post/:postId" element={<PostDetailPage />} />
           <Route path="/profile/:userId" element={<ProfileDetailPage />} />
-          <Route path="/reset-pasword" element={<ResetPasswordPage />} />
+          <Route path="/reset-password" element={<ResetPasswordPage />} />
         </Route>
         {/* 위에서 설정한 경로 이외의 요청이 들어오면 index로 이동 */}
         <Route path="*" element={<Navigate to={"/"} />} />
