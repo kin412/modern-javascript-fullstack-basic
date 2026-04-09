@@ -1,4 +1,5 @@
 import GlobalLoader from "@/components/global-loader";
+import { useProfileData } from "@/hooks/queries/use-profile-data";
 import supabase from "@/lib/supabase";
 import { useIsSessionLoaded, useSession, useSetSession } from "@/store/session";
 import { useEffect, type ReactNode } from "react";
@@ -8,6 +9,12 @@ export default function SessionProvider({ children }: { children: ReactNode }) {
 
   const session = useSession();
   const isSessionLoaded = useIsSessionLoaded();
+
+  const {
+    data: profile,
+    isLoading: isProfileLoading,
+    isPending,
+  } = useProfileData(session?.user.id);
 
   useEffect(() => {
     //console.log("111");
@@ -24,6 +31,7 @@ export default function SessionProvider({ children }: { children: ReactNode }) {
   //로딩창 테스트를 위해
   //return <GlobalLoader />;
   if (!isSessionLoaded) return <GlobalLoader />;
+  if (isProfileLoading) return <GlobalLoader />;
 
   return children;
 }
