@@ -9,16 +9,24 @@ function toNestedComments(comments: Comment[]): NestedComment[] {
   const result: NestedComment[] = [];
 
   comments.forEach((comment) => {
-    if (!comment.parent_comment_id) {
+    if (!comment.root_comment_id) {
       result.push({ ...comment, children: [] });
     } else {
-      const parentCommnetIndex = result.findIndex(
+      const rootCommnetIndex = result.findIndex(
+        (item) => item.id === comment.root_comment_id,
+      );
+
+      const parentComment = comments.find(
         (item) => item.id === comment.parent_comment_id,
       );
-      result[parentCommnetIndex].children.push({
+
+      if (rootCommnetIndex === -1) return;
+      if (!parentComment) return;
+
+      result[rootCommnetIndex].children.push({
         ...comment,
         children: [],
-        parentComment: result[parentCommnetIndex],
+        parentComment,
       });
     }
   });
