@@ -1,4 +1,4 @@
-import { usePostData } from "@/hooks/queries/use-post-data";
+//import { usePostData } from "@/hooks/queries/use-post-data";
 import Fallback from "../fallback";
 import Loader from "../loader";
 import PostItem from "./post-item";
