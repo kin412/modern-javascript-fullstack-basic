@@ -14,24 +14,63 @@ export type Database = {
   }
   public: {
     Tables: {
+      comment: {
+        Row: {
+          author_id: string
+          content: string
+          created_at: string
+          id: number
+          post_id: number
+        }
+        Insert: {
+          author_id?: string
+          content?: string
+          created_at?: string
+          id?: number
+          post_id: number
+        }
+        Update: {
+          author_id?: string
+          content?: string
+          created_at?: string
+          id?: number
+          post_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "comment_author_id_fkey"
+            columns: ["author_id"]
+            isOneToOne: false
+            referencedRelation: "profile"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "comment_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "post"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       like: {
         Row: {
           created_at: string
           id: number
           post_id: number
-          use_id: string
+          user_id: string
         }
         Insert: {
           created_at?: string
           id?: number
           post_id: number
-          use_id?: string
+          user_id?: string
         }
         Update: {
           created_at?: string
           id?: number
           post_id?: number
-          use_id?: string
+          user_id?: string
         }
         Relationships: [
           {
