@@ -27,5 +27,13 @@ export function useInfinitePostsData() {
       if (lastPage.length < PAGE_SIZE) return undefined;
       return allPages.length;
     },
+    // staleTime: 0,
+    // gcTime: 5 * 60 * 1000,
+    // refetchOnWindowFocus: true,
+
+    //무한스크롤로 불러오는 데이터는 stale상태가 되지않음. -> 자동 리페칭이 일어나지 않게 설정.
+    //그럼 리페칭이 안되면 새로운 데이터는 어떻게 갱신 시키나?
+    //그것은 데이터 생성, 수정,삭제 시에 갱신되게끔. -> 원하는 타이밍에만
+    staleTime: Infinity,
   });
 }
